@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer</title>
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js"></script>
+<body>
+<h1>鐘點站 倒數計時器</h1>
+
+
+
+<p id="dateTime">指定倒數至日期<input type="date"><button id="btnset">設定</button><p>
+<p id="countdown"></p>
+</body>
+<style>
+    #countdown{
+    text-align: center;
+    font-size: 100px;
+    color: rgb(7, 192, 38);
+}
+
+h1{
+    font-size: 90px;
+    text-align: center;
+}
+
+#dateTime{
+    text-align: center;
+}
+#btnset{
+    border-radius: 50;
+    color: azure;
+    margin: 10px;
+    border: 0cap;
+    background-color: blue;
+}
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var targetDate;
+
+    // 按鈕點擊事件
+    document.getElementById("btnset").addEventListener("click", function() {
+        var inputDate = document.querySelector('input[type="date"]').value;
+        targetDate = new Date(inputDate + "T00:00:00").getTime();
+        updateCountdown(); // 設置目標日期後，立即更新倒計時
+    });
+
+    // 更新計時器函數
+    function updateCountdown() {
+        if (!targetDate) return; // 如果目標日期未設置，則返回
+
+        var currentDate = new Date().getTime();
+        var difference = targetDate - currentDate;
+
+        var years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365)).toString();
+        var weeks = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+        var days = Math.floor(difference / (1000 * 60 * 60 * 24)) % 7;
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // 轉換為位數格式
+        years = years.padStart(4, "0");
+        weeks = ('0' + weeks).slice(-2);
+        //days = ('0' + days).slice(-2);
+        hours = ('0' + hours).slice(-2);
+        minutes = ('0' + minutes).slice(-2);
+        seconds = ('0' + seconds).slice(-2);
+
+        // 顯示倒數計時器
+        document.getElementById("countdown").innerHTML = years + ":" + weeks + ":" + days + ":" + hours + ":" + minutes + ":" + seconds;
+    }
+
+    // 每秒更新一次計時器
+    setInterval(updateCountdown, 1000);
+});
+
+</script>
+</html>
